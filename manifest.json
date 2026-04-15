@@ -1,0 +1,95 @@
+{
+  "manifest_version": 3,
+  "name": "JobSprint AI — Auto Apply Jobs",
+  "version": "1.0.0",
+  "description": "Automatically apply to jobs on Naukri, LinkedIn, Indeed and 7 more Indian job sites.",
+
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting",
+    "notifications",
+    "alarms"
+  ],
+
+  "host_permissions": [
+    "http://localhost:3000/*",
+    "http://127.0.0.1:3000/*",
+    "*://*.naukri.com/*",
+    "*://*.linkedin.com/*",
+    "*://*.indeed.com/*",
+    "*://*.shine.com/*",
+    "*://*.foundit.in/*",
+    "*://*.freshersworld.com/*",
+    "*://*.internshala.com/*",
+    "*://*.timesjobs.com/*",
+    "*://*.hirist.com/*",
+    "*://*.apna.co/*"
+  ],
+
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.naukri.com/*"],
+      "js": ["content.js", "sites/naukri.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["*://*.linkedin.com/jobs/*"],
+      "js": ["content.js", "sites/linkedin.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["*://*.indeed.com/*"],
+      "js": ["content.js", "sites/indeed.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["*://*.shine.com/*"],
+      "js": ["content.js", "sites/shine.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["*://*.foundit.in/*"],
+      "js": ["content.js", "sites/foundit.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["*://*.freshersworld.com/*"],
+      "js": ["content.js", "sites/freshersworld.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["*://*.internshala.com/*"],
+      "js": ["content.js", "sites/internshala.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["*://*.timesjobs.com/*"],
+      "js": ["content.js", "sites/timesjobs.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["*://*.hirist.com/*"],
+      "js": ["content.js", "sites/hirist.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["*://*.apna.co/*"],
+      "js": ["content.js", "sites/apna.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

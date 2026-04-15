@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0d1117;
+      --card: #161c2a;
+      --card-hover: #1c2438;
+      --border: rgba(255,255,255,0.07);
+      --border-hi: rgba(255,255,255,0.13);
+      --blue: #4f9cf9;
+      --blue-bg: rgba(79,156,249,0.09);
+      --blue-bd: rgba(79,156,249,0.2);
+      --green: #22c55e;
+      --green-bg: rgba(34,197,94,0.09);
+      --green-bd: rgba(34,197,94,0.2);
+      --purple-bg: rgba(139,92,246,0.09);
+      --purple-bd: rgba(139,92,246,0.2);
+      --purple: #8b5cf6;
+      --amber: #f59e0b;
+      --amber-bg: rgba(245,158,11,0.09);
+      --amber-bd: rgba(245,158,11,0.2);
+      --red: #ef4444;
+      --text: #dde4f0;
+      --text2: #7a8699;
+      --text3: #3a4a5e;
+      --r: 12px;
+      --r-sm: 8px;
+    }
+
+    html { overflow-y: auto; scrollbar-width: thin; scrollbar-color: #1e2a3a transparent; }
+
+    body {
+      width: 400px;
+      min-height: 600px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, 'SF Pro Text', 'Segoe UI Variable', 'Segoe UI', sans-serif;
+      font-size: 13px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── TOP BAR ─── */
+    .top-bar {
+      background: #0a0f1c;
+      border-bottom: 1px solid var(--border);
+      padding: 7px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .top-bar-left { display: flex; align-items: center; gap: 7px; }
+
+    .flag-icon {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff9933 33%, #fff 33%, #fff 66%, #138808 66%);
+      flex-shrink: 0;
+    }
+
+    .top-bar-label { font-size: 11px; color: var(--text2); }
+
+    .live-badge {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      background: var(--green-bg);
+      border: 1px solid var(--green-bd);
+      color: var(--green);
+    }
+
+    .live-badge.off {
+      background: rgba(58,74,94,0.2);
+      border-color: rgba(58,74,94,0.3);
+      color: var(--text3);
+    }
+
+    .live-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .live-badge:not(.off) .live-dot { box-shadow: 0 0 5px var(--green); animation: blink 2s infinite; }
+
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
+
+    /* ─── HEADER ─── */
+    .header {
+      padding: 18px 18px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .app-logo {
+      width: 56px; height: 56px;
+      border-radius: 15px;
+      background: linear-gradient(145deg, #18366b 0%, #0b1d42 100%);
+      border: 1px solid rgba(79,156,249,0.32);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .app-name {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.6px;
+      line-height: 1;
+      margin-bottom: 5px;
+    }
+
+    .app-name b { color: var(--blue); font-weight: 800; }
+
+    .app-tagline { font-size: 12px; color: var(--text2); }
+
+    .app-tagline a { color: var(--blue); text-decoration: none; }
+
+    /* ─── BODY ─── */
+    .body { padding: 14px 14px; display: flex; flex-direction: column; gap: 10px; }
+
+    /* ─── LOGIN ─── */
+    .login-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 30px 22px;
+      text-align: center;
+    }
+
+    .login-graphic {
+      width: 56px; height: 56px;
+      background: var(--blue-bg);
+      border: 1px solid var(--blue-bd);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+
+    .login-title { font-size: 17px; font-weight: 800; color: var(--text); letter-spacing: -0.4px; margin-bottom: 8px; }
+    .login-sub { font-size: 12px; color: var(--text2); line-height: 1.6; margin-bottom: 22px; }
+
+    .btn {
+      display: block; width: 100%;
+      padding: 12px 18px;
+      border: none; border-radius: var(--r-sm);
+      font-size: 13px; font-weight: 700;
+      cursor: pointer; text-decoration: none;
+      text-align: center; font-family: inherit;
+      letter-spacing: -0.1px;
+      transition: opacity .15s, transform .1s;
+    }
+
+    .btn:hover { opacity: .87; }
+    .btn:active { transform: scale(.98); }
+    .btn-blue { background: var(--blue); color: #fff; }
+
+    /* ─── SECTION LABEL ─── */
+    .sec { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .1em; }
+
+    /* ─── STATS ─── */
+    .stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 14px 8px;
+      text-align: center;
+    }
+
+    .stat-icon-wrap {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 8px;
+    }
+
+    .stat-num {
+      font-size: 26px; font-weight: 800;
+      color: var(--blue);
+      display: block;
+      letter-spacing: -1px;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-lbl {
+      font-size: 9px; color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: .1em; font-weight: 700;
+    }
+
+    /* ─── TOGGLE ─── */
+    .toggle-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 14px 16px;
+      display: flex; align-items: center; gap: 14px;
+      transition: border-color .25s, background .25s;
+    }
+
+    .toggle-card.on {
+      border-color: var(--green-bd);
+      background: linear-gradient(135deg,#161c2a,#0c1e0f);
+    }
+
+    .tc-icon {
+      width: 42px; height: 42px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .tc-info { flex: 1; }
+    .tc-title { font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: -.2px; margin-bottom: 3px; }
+    .tc-sub { font-size: 11px; color: var(--text2); }
+
+    .sw {
+      width: 46px; height: 26px;
+      border-radius: 999px; border: none;
+      cursor: pointer; position: relative; flex-shrink: 0;
+      background: #28344a;
+      transition: background .2s;
+    }
+
+    .sw.on { background: var(--green); }
+
+    .sw-thumb {
+      position: absolute; top: 3px; left: 3px;
+      width: 20px; height: 20px;
+      border-radius: 50%; background: #fff;
+      transition: transform .22s cubic-bezier(.34,1.3,.64,1);
+      box-shadow: 0 1px 5px rgba(0,0,0,.5);
+    }
+
+    .sw.on .sw-thumb { transform: translateX(20px); }
+
+    /* ─── SITE SELECTOR ─── */
+    .site-selector {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+
+    .site-selector-header {
+      padding: 11px 16px 10px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .site-selector-title { font-size: 13px; font-weight: 700; color: var(--text); }
+
+    .site-list { padding: 4px 0; }
+
+    .site-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: background .15s;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .site-item:last-child { border-bottom: none; }
+    .site-item:hover { background: var(--card-hover); }
+
+    .site-item-icon {
+      width: 32px; height: 32px;
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .site-item-info { flex: 1; }
+    .site-item-name { font-size: 13px; font-weight: 600; color: var(--text); }
+    .site-item-desc { font-size: 10px; color: var(--text3); margin-top: 1px; }
+
+    .site-item-right { display: flex; align-items: center; gap: 8px; }
+
+    .site-check {
+      width: 18px; height: 18px;
+      border-radius: 5px;
+      border: 1.5px solid var(--border-hi);
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s, border-color .15s;
+      flex-shrink: 0;
+    }
+
+    .site-check.checked {
+      background: var(--blue);
+      border-color: var(--blue);
+    }
+
+    .site-status {
+      font-size: 9px; font-weight: 700;
+      letter-spacing: .04em; padding: 2px 7px;
+      border-radius: 999px;
+    }
+
+    .status-live { background: var(--green-bg); border: 1px solid var(--green-bd); color: var(--green); }
+    .status-soon { background: var(--amber-bg); border: 1px solid var(--amber-bd); color: var(--amber); }
+
+    /* ─── PROGRESS ─── */
+    .prog-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 14px 16px;
+    }
+
+    .prog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .prog-left { display: flex; align-items: center; gap: 10px; }
+
+    .prog-icon {
+      width: 32px; height: 32px;
+      background: var(--blue-bg); border: 1px solid var(--blue-bd);
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .prog-title { font-size: 13px; font-weight: 700; color: var(--text); letter-spacing: -.2px; }
+    .prog-count { font-size: 12px; font-weight: 700; color: var(--blue); }
+
+    .prog-track { height: 5px; background: rgba(255,255,255,.05); border-radius: 999px; overflow: hidden; }
+    .prog-fill { height: 100%; background: linear-gradient(90deg,var(--blue),#93c5fd); border-radius: 999px; transition: width .6s ease; }
+
+    /* ─── NAV CARDS ─── */
+    .nav-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 13px 16px;
+      display: flex; align-items: center; gap: 13px;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+      position: relative;
+      text-decoration: none;
+    }
+
+    .nav-card:hover { border-color: var(--border-hi); background: var(--card-hover); }
+
+    .nav-card-icon {
+      width: 40px; height: 40px;
+      border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .nav-card-text { flex: 1; }
+    .nav-card-title { font-size: 13px; font-weight: 700; color: var(--text); letter-spacing: -.2px; margin-bottom: 2px; }
+    .nav-card-sub { font-size: 11px; color: var(--text2); }
+
+    .nav-badge {
+      position: absolute; top: -1px; right: 10px;
+      padding: 2px 8px; border-radius: 0 0 7px 7px;
+      font-size: 9px; font-weight: 700; letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .nb-green { background: var(--green); color: #fff; }
+    .nb-blue { background: var(--blue); color: #fff; }
+
+    /* ─── ACTIVITY ─── */
+    .act-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+
+    .act-header {
+      padding: 11px 16px 10px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .act-header-icon {
+      width: 26px; height: 26px;
+      background: var(--amber-bg); border: 1px solid var(--amber-bd);
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .act-header-title { font-size: 12px; font-weight: 700; color: var(--text); }
+
+    .act-body { max-height: 130px; overflow-y: auto; }
+    .act-body::-webkit-scrollbar { width: 3px; }
+    .act-body::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 2px; }
+
+    .act-item {
+      display: flex; align-items: baseline; gap: 10px;
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--border);
+      transition: background .12s;
+    }
+
+    .act-item:last-child { border-bottom: none; }
+    .act-item:hover { background: rgba(255,255,255,.02); }
+
+    .act-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); flex-shrink: 0; margin-top: 4px; }
+    .act-time { font-size: 10px; color: var(--text3); flex-shrink: 0; font-variant-numeric: tabular-nums; }
+    .act-text { font-size: 11px; color: var(--text2); line-height: 1.4; }
+
+    .act-empty { padding: 20px 16px; font-size: 11px; color: var(--text3); text-align: center; }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      padding: 10px 14px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .plan-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px; border-radius: 999px;
+      font-size: 10px; font-weight: 700; letter-spacing: .05em;
+      background: var(--blue-bg); border: 1px solid var(--blue-bd); color: var(--blue);
+    }
+
+    .footer-links { display: flex; gap: 14px; }
+
+    .flink {
+      font-size: 11px; color: var(--text2); text-decoration: none;
+      display: flex; align-items: center; gap: 3px;
+      transition: color .15s;
+    }
+
+    .flink:hover { color: var(--text); }
+
+    /* ─── FADE IN ─── */
+    .body > * { animation: fu .18s ease both; }
+    .body > *:nth-child(1){animation-delay:.03s}
+    .body > *:nth-child(2){animation-delay:.06s}
+    .body > *:nth-child(3){animation-delay:.09s}
+    .body > *:nth-child(4){animation-delay:.12s}
+    .body > *:nth-child(5){animation-delay:.15s}
+    .body > *:nth-child(6){animation-delay:.18s}
+    .body > *:nth-child(7){animation-delay:.21s}
+    .body > *:nth-child(8){animation-delay:.24s}
+
+    @keyframes fu { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:none} }
+  </style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="top-bar">
+  <div class="top-bar-left">
+    <div class="flag-icon"></div>
+    <span class="top-bar-label">India — Naukri · LinkedIn · Indeed</span>
+  </div>
+  <div class="live-badge off" id="liveBadge">
+    <div class="live-dot"></div>
+    <span id="liveText">Offline</span>
+  </div>
+</div>
+
+<!-- Header -->
+<div class="header">
+  <div class="app-logo">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <path d="M14 3L25 8.5V14C25 19.8 20.1 24.7 14 26C7.9 24.7 3 19.8 3 14V8.5L14 3Z" fill="rgba(79,156,249,0.15)" stroke="#4f9cf9" stroke-width="1.5"/>
+      <path d="M9 14L12.5 17.5L19 11" stroke="#4f9cf9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <div>
+    <div class="app-name">Job<b>Sprint</b> AI</div>
+    <div class="app-tagline">Automated Job Application Engine · <a href="http://localhost:3000" target="_blank">Open App</a></div>
+  </div>
+</div>
+
+<!-- Body -->
+<div class="body">
+
+  <!-- Login -->
+  <div id="loginPrompt" class="login-card" style="display:none">
+    <div class="login-graphic">
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+        <path d="M13 3L23 8V13C23 18.5 18.5 23 13 24.5C7.5 23 3 18.5 3 13V8L13 3Z" stroke="#4f9cf9" stroke-width="1.5" fill="rgba(79,156,249,0.1)"/>
+        <path d="M8 13L11.5 16.5L18 10" stroke="#4f9cf9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="login-title">Start Auto Applying</div>
+    <div class="login-sub">Log in to your JobSprint account and let AI apply to jobs for you automatically across multiple platforms</div>
+    <a href="http://localhost:3000/login" target="_blank" class="btn btn-blue">Login to JobSprint AI →</a>
+  </div>
+
+  <!-- Logged in -->
+  <div id="mainUI" style="display:none;flex-direction:column;gap:10px">
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-icon-wrap" style="background:var(--blue-bg);border:1px solid var(--blue-bd)">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L13 4V7C13 10.3 10.3 13 7 13.5C3.7 13 1 10.3 1 7V4L7 1Z" stroke="#4f9cf9" stroke-width="1.2" fill="none"/><path d="M4.5 7L6.5 9L9.5 5.5" stroke="#4f9cf9" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
+        <span class="stat-num" id="todayCount">0</span>
+        <span class="stat-lbl">Today</span>
+      </div>
+      <div class="stat">
+        <div class="stat-icon-wrap" style="background:var(--purple-bg);border:1px solid var(--purple-bd)">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="5" width="12" height="8" rx="2" stroke="#8b5cf6" stroke-width="1.2" fill="none"/><path d="M4 5V3.5a3 3 0 016 0V5" stroke="#8b5cf6" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
+        <span class="stat-num" id="totalCount">0</span>
+        <span class="stat-lbl">Total</span>
+      </div>
+      <div class="stat">
+        <div class="stat-icon-wrap" style="background:var(--green-bg);border:1px solid var(--green-bd)">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#22c55e" stroke-width="1.2" fill="none"/><path d="M4.5 7L6.5 9L9.5 5" stroke="#22c55e" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <span class="stat-num" id="interviewCount">0</span>
+        <span class="stat-lbl">Interviews</span>
+      </div>
+    </div>
+
+    <!-- Auto Apply toggle -->
+    <div class="toggle-card" id="toggleCard">
+      <div class="tc-icon" style="background:var(--green-bg);border:1px solid var(--green-bd)">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M10 2L17 5.5V10C17 14.1 13.9 17.8 10 19C6.1 17.8 3 14.1 3 10V5.5L10 2Z" stroke="#22c55e" stroke-width="1.4" fill="rgba(34,197,94,0.08)"/>
+          <path d="M7 10L9.5 12.5L13 8" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="tc-info">
+        <div class="tc-title">Auto Apply</div>
+        <div class="tc-sub" id="toggleSub">Enable to start applying automatically</div>
+      </div>
+      <button class="sw" id="autoApplyToggle"><div class="sw-thumb"></div></button>
+    </div>
+
+    <!-- Site selector -->
+    <div class="site-selector">
+      <div class="site-selector-header">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="8" cy="8" r="7" stroke="#4f9cf9" stroke-width="1.3" fill="none"/>
+          <path d="M8 1C8 1 5 4 5 8C5 12 8 15 8 15" stroke="#4f9cf9" stroke-width="1.3"/>
+          <path d="M8 1C8 1 11 4 11 8C11 12 8 15 8 15" stroke="#4f9cf9" stroke-width="1.3"/>
+          <path d="M1 8H15" stroke="#4f9cf9" stroke-width="1.3"/>
+        </svg>
+        <div class="site-selector-title">Job Sites</div>
+      </div>
+      <div class="site-list">
+        <div class="site-item" data-site="naukri" data-url="https://www.naukri.com/mnjuser/homepage">
+          <div class="site-item-icon" style="background:var(--blue-bg);border:1px solid var(--blue-bd)">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="9" rx="2" stroke="#4f9cf9" stroke-width="1.2" fill="none"/><path d="M5 4V3a3 3 0 016 0v1" stroke="#4f9cf9" stroke-width="1.2"/><path d="M2 8h12" stroke="#4f9cf9" stroke-width="1.2"/></svg>
+          </div>
+          <div class="site-item-info">
+            <div class="site-item-name">Naukri.com</div>
+            <div class="site-item-desc">India's #1 job portal</div>
+          </div>
+          <div class="site-item-right">
+            <span class="site-status status-live">LIVE</span>
+          </div>
+        </div>
+        <div class="site-item" data-site="linkedin" data-url="https://www.linkedin.com/jobs/search/">
+          <div class="site-item-icon" style="background:var(--blue-bg);border:1px solid var(--blue-bd)">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="3" stroke="#4f9cf9" stroke-width="1.2" fill="none"/><path d="M5 6.5V11" stroke="#4f9cf9" stroke-width="1.3" stroke-linecap="round"/><circle cx="5" cy="4.5" r=".8" fill="#4f9cf9"/><path d="M8 11V8.5C8 7.4 8.9 6.5 10 6.5C11.1 6.5 11 7.4 11 8.5V11" stroke="#4f9cf9" stroke-width="1.3" stroke-linecap="round"/></svg>
+          </div>
+          <div class="site-item-info">
+            <div class="site-item-name">LinkedIn</div>
+            <div class="site-item-desc">Professional network jobs</div>
+          </div>
+          <div class="site-item-right">
+            <span class="site-status status-soon">SOON</span>
+          </div>
+        </div>
+        <div class="site-item" data-site="indeed" data-url="https://indeed.com/jobs">
+          <div class="site-item-icon" style="background:var(--purple-bg);border:1px solid var(--purple-bd)">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="7" r="4.5" stroke="#8b5cf6" stroke-width="1.2" fill="none"/><path d="M8 11.5V14.5M5.5 14h5" stroke="#8b5cf6" stroke-width="1.3" stroke-linecap="round"/></svg>
+          </div>
+          <div class="site-item-info">
+            <div class="site-item-name">Indeed</div>
+            <div class="site-item-desc">Global job search</div>
+          </div>
+          <div class="site-item-right">
+            <span class="site-status status-soon">SOON</span>
+          </div>
+        </div>
+        <div class="site-item" data-site="internshala" data-url="https://internshala.com/student/dashboard">
+          <div class="site-item-icon" style="background:var(--amber-bg);border:1px solid var(--amber-bd)">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2L14 5V9C14 12.3 11.3 15 8 15C4.7 15 2 12.3 2 9V5L8 2Z" stroke="#f59e0b" stroke-width="1.2" fill="none"/></svg>
+          </div>
+          <div class="site-item-info">
+            <div class="site-item-name">Internshala</div>
+            <div class="site-item-desc">Internships & fresher jobs</div>
+          </div>
+          <div class="site-item-right">
+            <span class="site-status status-soon">SOON</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Daily limit -->
+    <div class="prog-card">
+      <div class="prog-header">
+        <div class="prog-left">
+          <div class="prog-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="2" stroke="#4f9cf9" stroke-width="1.2" fill="none"/><path d="M5 1v4M11 1v4M2 7h12" stroke="#4f9cf9" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="prog-title">Daily Limit</div>
+        </div>
+        <span class="prog-count" id="progressText">0 / 50</span>
+      </div>
+      <div class="prog-track">
+        <div class="prog-fill" id="progressFill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <!-- Nav cards -->
+    <div class="sec">Quick Access</div>
+
+    <div class="nav-card" id="dashCard">
+      <div class="nav-badge nb-green">Active</div>
+      <div class="nav-card-icon" style="background:var(--blue-bg);border:1px solid var(--blue-bd)">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="1" y="1" width="7" height="7" rx="2" stroke="#4f9cf9" stroke-width="1.3" fill="none"/><rect x="10" y="1" width="7" height="7" rx="2" stroke="#4f9cf9" stroke-width="1.3" fill="none"/><rect x="1" y="10" width="7" height="7" rx="2" stroke="#4f9cf9" stroke-width="1.3" fill="none"/><rect x="10" y="10" width="7" height="7" rx="2" stroke="#4f9cf9" stroke-width="1.3" fill="none"/></svg>
+      </div>
+      <div class="nav-card-text">
+        <div class="nav-card-title">Dashboard</div>
+        <div class="nav-card-sub">Applications, stats and analytics</div>
+      </div>
+      <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="#3a4a5e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+
+    <div class="nav-card" id="profileCard">
+      <div class="nav-card-icon" style="background:var(--purple-bg);border:1px solid var(--purple-bd)">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="4" stroke="#8b5cf6" stroke-width="1.3" fill="none"/><path d="M2 16c0-3.3 3.1-6 7-6s7 2.7 7 6" stroke="#8b5cf6" stroke-width="1.3" stroke-linecap="round" fill="none"/></svg>
+      </div>
+      <div class="nav-card-text">
+        <div class="nav-card-title">My Profile</div>
+        <div class="nav-card-sub">Resume, skills and preferences</div>
+      </div>
+      <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="#3a4a5e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+
+    <div class="nav-card" id="trackerCard">
+      <div class="nav-card-icon" style="background:var(--amber-bg);border:1px solid var(--amber-bd)">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="3" stroke="#f59e0b" stroke-width="1.3" fill="none"/><path d="M5 7h8M5 10h5M5 13h6" stroke="#f59e0b" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </div>
+      <div class="nav-card-text">
+        <div class="nav-card-title">Tracker</div>
+        <div class="nav-card-sub">View all application statuses</div>
+      </div>
+      <svg width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1l5 5-5 5" stroke="#3a4a5e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+
+    <!-- Activity -->
+    <div class="act-card">
+      <div class="act-header">
+        <div class="act-header-icon">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v3M6.5 9v3M1 6.5h3M9 6.5h3" stroke="#f59e0b" stroke-width="1.3" stroke-linecap="round"/><circle cx="6.5" cy="6.5" r="2.5" stroke="#f59e0b" stroke-width="1.2" fill="none"/></svg>
+        </div>
+        <div class="act-header-title">Recent Activity</div>
+      </div>
+      <div class="act-body" id="activityLog">
+        <div class="act-empty">No applications yet — open a job site to begin</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="plan-chip">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1L6.2 3.5L9 3.9L7 5.8L7.5 8.5L5 7.2L2.5 8.5L3 5.8L1 3.9L3.8 3.5L5 1Z" stroke="#4f9cf9" stroke-width="1" fill="rgba(79,156,249,0.2)"/></svg>
+    <span id="planBadge">FREE</span>
+  </div>
+  <div class="footer-links">
+    <a href="http://localhost:3000/billing" target="_blank" class="flink">
+      Upgrade
+      <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 7.5L7.5 1.5M7.5 1.5H4M7.5 1.5V5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <a href="http://localhost:3000/settings" target="_blank" class="flink">
+      Settings
+      <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 7.5L7.5 1.5M7.5 1.5H4M7.5 1.5V5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</div>
+
+<script src="popup.js"></script>
+</body>
+</html>
