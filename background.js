@@ -57,6 +57,30 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       })
       return true
     }
+
+    if (msg.type === 'MIMIC_MOUSE') {
+      chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+        const tabId = tab.id
+        chrome.debugger.attach({ tabId }, '1.3', () => {
+          let x = 100, y = 200
+          let moves = 0
+          const interval = setInterval(() => {
+            x += 10
+            y += 5
+            chrome.debugger.sendCommand({ tabId }, 'Input.dispatchMouseEvent', {
+              type: 'mouseMoved', x, y, modifiers: 0
+            })
+            moves++
+            if (moves >= 10) {
+              clearInterval(interval)
+              chrome.debugger.detach({ tabId }, () => {})
+              sendResponse({})
+            }
+          }, 100)
+        })
+      })
+      return true
+    }
   } catch (error) {
     console.error('Error in message listener:', error)
   }

@@ -9,7 +9,8 @@
     "storage",
     "scripting",
     "notifications",
-    "alarms"
+    "alarms",
+    "debugger"
   ],
 
   "host_permissions": [
@@ -52,7 +53,7 @@
       "run_at": "document_idle"
     },
     {
-      "matches": ["*://*.indeed.com/*"],
+      "matches": ["*://*.indeed.com/*", "*://in.indeed.com/*", "*://smartapply.indeed.com/*"],
       "js": ["content.js", "sites/indeed.js"],
       "run_at": "document_idle"
     },
@@ -82,7 +83,7 @@
       "run_at": "document_idle"
     },
     {
-      "matches": ["*://*.hirist.com/*"],
+      "matches": ["*://*.hirist.com/*", "https://www.hirist.tech/*"],
       "js": ["content.js", "sites/hirist.js"],
       "run_at": "document_idle"
     },
